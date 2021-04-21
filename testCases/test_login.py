@@ -13,7 +13,7 @@ class Test_001_Login:
     def test_homePageTitle(self,setup):
         self.logger.info("**********Test_001_Login**********")
         self.logger.info("**********verifying test_homePageTitle**********")
-        self.driver = setup
+        self.driver = 1
         self.driver.get(self.baseURL)
         actual_title = self.driver.title
         if actual_title == "MARS Iris":
