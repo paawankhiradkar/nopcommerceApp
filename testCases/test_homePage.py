@@ -43,13 +43,31 @@ class Test_002_homePage:
         loginPage.setPassword(self.password)
         loginPage.clickLogin()
         homePage = HomePage(self.driver)
-        homePage.clickDashboard()
-        if self.driver.find_element(By.XPATH,"//span[text()='Dashboard']/parent::div").is_displayed():
-            assert True
-            self.logger.info("Dashboard visible.")
-            self.driver.close()
-        else:
+        homePage.click('profile', self.logger)
+        try:
+            if self.driver.find_element(By.XPATH,"//span[text()='Dashboard']/parent::div").is_displayed():
+                assert True
+                self.logger.info("Dashboard visible.")
+                self.driver.close()
+            else:
+                self.driver.save_screenshot(".\\Screenshots\\" + "test_dashboard_clickable.png")
+                self.logger.info("Dashboard NOT visbile.")
+                self.driver.close()
+                assert False
+        except Exception as e:
+            self.logger.info(e)
+            self.logger.info("Dashboard NOT clickable.")
             self.driver.save_screenshot(".\\Screenshots\\" + "test_dashboard_clickable.png")
-            self.logger.info("Dashboard NOT visbile.")
-            self.driver.close()
             assert False
+
+    @pytest.mark.logout
+    def test_logout(self,setup):
+        self.logger.info("Verifying logout functionality.")
+        self.driver = setup
+        self.driver.get(self.baseURL)
+        loginPage = LoginPage(self.driver)
+        loginPage.setUserName(self.username)
+        loginPage.setPassword(self.password)
+        loginPage.clickLogin()
+        homepage = HomePage(self.driver)
+        homepage.logout(self.logger)
